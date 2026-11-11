@@ -191,7 +191,7 @@ pub fn emit_csharp(
             method_list_string.push_str_ln("        [return: MarshalAs(UnmanagedType.U1)]");
         }
         method_list_string.push_str_ln(
-            format!("        {accessibility} static extern {return_type} {method_prefix}{method_name}({parameters});").as_str(),
+            format!("        {accessibility} static unsafe extern {return_type} {method_prefix}{method_name}({parameters});").as_str(),
         );
         method_list_string.push('\n');
     }

@@ -86,7 +86,7 @@ namespace CsBindgen
         const string __DllName = "example";
 
         [DllImport(__DllName, EntryPoint = "my_add", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern int my_add(int x, int y);
+        public static unsafe extern int my_add(int x, int y);
     }
 }
 ```
@@ -202,7 +202,7 @@ namespace CsBindgen
         const string __DllName = "liblz4";
 
         [DllImport(__DllName, EntryPoint = "csbindgen_LZ4_compress_default", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern int LZ4_compress_default(byte* src, byte* dst, int srcSize, int dstCapacity);
+        public static unsafe extern int LZ4_compress_default(byte* src, byte* dst, int srcSize, int dstCapacity);
     }
 }
 ```
@@ -273,7 +273,7 @@ namespace {csharp_namespace}
     {csharp_generate_const_filter}
 
     [DllImport(__DllName, EntryPoint = "{csharp_entry_point_prefix}LZ4_versionNumber", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-    public static extern int {csharp_method_prefix}LZ4_versionNumber();
+    public static unsafe extern int {csharp_method_prefix}LZ4_versionNumber();
 }
 ```
 
@@ -303,7 +303,7 @@ also `csharp_imported_namespaces` can call multiple times.
 ```csharp
 // true(default) generates delegate*
 [DllImport(__DllName, EntryPoint = "callback_test", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-public static extern int callback_test(delegate* unmanaged[Cdecl]<int, int> cb);
+public static unsafe extern int callback_test(delegate* unmanaged[Cdecl]<int, int> cb);
 
 // You can define like this callback method.
 [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -319,7 +319,7 @@ callback_test(&Method);
 public delegate int callback_test_cb_delegate(int a);
 
 [DllImport(__DllName, EntryPoint = "callback_test", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-public static extern int callback_test(callback_test_cb_delegate cb);
+public static unsafe extern int callback_test(callback_test_cb_delegate cb);
 
 // Unity can define callback method as MonoPInvokeCallback
 [MonoPInvokeCallback(typeof(NativeMethods.callback_test_cb_delegate))]
@@ -472,7 +472,7 @@ namespace CsBindgen
 ```csharp
 // original methods
 [DllImport(__DllName, EntryPoint = "counter_context_insert", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-public static extern void counter_context_insert(counter_context* context, int value);
+public static unsafe extern void counter_context_insert(counter_context* context, int value);
 
 // generated methods
 public static void Insert(this ref global::CsBindgen.counter_context @context, int @value)
@@ -772,10 +772,10 @@ In default, csbindgen generates `extern "C" fn` as `delegate* unmanaged[Cdecl]<>
 
 ```csharp
 [DllImport(__DllName, EntryPoint = "csharp_to_rust", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-public static extern void csharp_to_rust(delegate* unmanaged[Cdecl]<int, int, int> cb);
+public static unsafe extern void csharp_to_rust(delegate* unmanaged[Cdecl]<int, int, int> cb);
 
 [DllImport(__DllName, EntryPoint = "rust_to_csharp", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-public static extern delegate* unmanaged[Cdecl]<int, int, int> rust_to_csharp();
+public static unsafe extern delegate* unmanaged[Cdecl]<int, int, int> rust_to_csharp();
 ```
 
 It can use in C# like this.
